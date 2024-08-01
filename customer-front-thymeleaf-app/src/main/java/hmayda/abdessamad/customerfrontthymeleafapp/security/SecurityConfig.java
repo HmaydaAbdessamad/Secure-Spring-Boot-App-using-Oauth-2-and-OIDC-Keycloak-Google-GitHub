@@ -20,11 +20,12 @@ public class SecurityConfig {
                 .oauth2Login(Customizer.withDefaults())
                 .csrf(Customizer.withDefaults())
                 .logout((logout)-> logout
-
+                        .clearAuthentication(true)
                         .logoutSuccessUrl("/").permitAll()
                         .deleteCookies("JSESSIONID"))
                 .build();
     }
+
 
 
 }
