@@ -22,7 +22,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customers")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('admin')")
     public String customers(Model model){
         List<Customer> customerList=customerRepository.findAll();
         model.addAttribute(customerList);
