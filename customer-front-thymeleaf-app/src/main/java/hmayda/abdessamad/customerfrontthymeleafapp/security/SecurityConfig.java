@@ -32,15 +32,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
-                .authorizeHttpRequests(ar->ar.requestMatchers("/","/webjars/**","/h2-console/**").permitAll())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/","/webjars/**","/h2-console/**","/oauth2login").permitAll())
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(lo->lo.loginPage("/oauth2login"))
                 .csrf(Customizer.withDefaults())
                 .logout((logout)-> logout
                         .clearAuthentication(true)
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                         .logoutSuccessUrl("/").permitAll()
                         .deleteCookies("JSESSIONID"))
+                .exceptionHandling(eh->eh.accessDeniedPage("/notAuthorized"))
                 .build();
     }
 
