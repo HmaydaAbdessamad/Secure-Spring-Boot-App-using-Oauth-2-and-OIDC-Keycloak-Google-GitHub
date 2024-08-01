@@ -15,9 +15,12 @@
         <div class="card">
             <div class="card-body">
               <ul class="list-group">
-                  <li th:each="url:${urls}" class="list-group-item">
-                      <a th:text="${url.getKey()}" th:href="${url.getValue()}" class="btn btn-outline-info"></a>
-                  </li>
+                  <div class="d-grid">
+                      <li th:each="url:${urls}" class="list-group-item">
+                          <a th:text="${url.getKey()}" th:href="${url.getValue()}" class="btn btn-outline-info"></a>
+                      </li>
+                  </div>
+
               </ul>
             </div>
         </div>
