@@ -3,6 +3,7 @@ package hmayda.abdessamad.customerfrontthymeleafapp.web;
 
 import hmayda.abdessamad.customerfrontthymeleafapp.entities.Customer;
 import hmayda.abdessamad.customerfrontthymeleafapp.repository.CustomerRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customers")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String customers(Model model){
         List<Customer> customerList=customerRepository.findAll();
         model.addAttribute(customerList);
