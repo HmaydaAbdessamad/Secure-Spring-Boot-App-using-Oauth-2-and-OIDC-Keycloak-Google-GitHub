@@ -20,7 +20,7 @@ private ProductRepository productRepository;
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("hasAuthority('admin')")
     public List<Product> productList(){
         return productRepository.findAll();
     }

@@ -14,6 +14,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 import java.util.*;
 
@@ -32,6 +36,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(ar->ar.requestMatchers("/","/webjars/**","/h2-console/**","/oauth2login").permitAll())
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                 .headers(h->h.frameOptions(fo->fo.disable()))
@@ -42,6 +47,7 @@ public class SecurityConfig {
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                         .logoutSuccessUrl("/").permitAll()
                         .deleteCookies("JSESSIONID"))
+
                 .exceptionHandling(eh->eh.accessDeniedPage("/notAuthorized"))
                 .build();
     }
@@ -69,14 +75,23 @@ public class SecurityConfig {
         };
     }
     private List<SimpleGrantedAuthority> mapAuthorities(final Map<String, Object> attributes) {
-        final Map<String, Object> realmAccess = ((Map<String, Object>)attributes.getOrDefault("resource_access", Collections.emptyMap()));
-        final Map<String, Object> customerClientApp = ((Map<String, Object>)realmAccess.getOrDefault("customer-client-app", Collections.emptyMap()));
-        final Collection<String> roles = ((Collection<String>)customerClientApp.getOrDefault("roles", Collections.emptyList()));
+        final Map<String, Object> realmAccess = ((Map<String, Object>)attributes.getOrDefault("realm_access", Collections.emptyMap()));
+        final Collection<String> roles = ((Collection<String>)realmAccess.getOrDefault("roles", Collections.emptyList()));
+
         return roles.stream()
                 .map((role) -> new SimpleGrantedAuthority(role))
                 .toList();
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 
 }
