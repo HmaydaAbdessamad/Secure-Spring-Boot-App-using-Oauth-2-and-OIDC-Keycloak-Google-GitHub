@@ -43,6 +43,7 @@ public class CustomerController {
     }
 
     @GetMapping("/products")
+    @PreAuthorize("hasAuthority('admin')")
     public String products(Model model) {
         //calling spring security to get the context ?
         SecurityContext context = SecurityContextHolder.getContext();

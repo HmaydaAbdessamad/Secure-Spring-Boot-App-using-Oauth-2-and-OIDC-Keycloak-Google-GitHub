@@ -1,3 +1,4 @@
+
 package com.example.inventoryservice.securityConfig;
 
 import org.springframework.context.annotation.Bean;
@@ -13,12 +14,22 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(prePostEnabled = false)
 public class SecurityConfig {
 
+    private JwtAuthConverter jwtAuthConverter;
+
+    public SecurityConfig(JwtAuthConverter jwtAuthConverter) {
+        this.jwtAuthConverter = jwtAuthConverter;
+    }
+
     @Bean
     SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
-                .oauth2ResourceServer(o2->o2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(o2->o2.jwt(jwt-> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
+                .headers(h->h.frameOptions(fo->fo.disable()))
+                .csrf(cr->cr.ignoringRequestMatchers("/h2-console/**"))
                 .build();
 
     }
+
+
 }
