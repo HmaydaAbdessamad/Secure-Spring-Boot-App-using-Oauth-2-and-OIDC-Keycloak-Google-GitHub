@@ -1,10 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [
+        AppComponent
+      ],
     }).compileComponents();
   });
 
@@ -14,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'customer-app' title`, () => {
+  it(`should have as title 'angular-front-app'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('customer-app');
+    expect(app.title).toEqual('angular-front-app');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, customer-app');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular-front-app');
   });
 });

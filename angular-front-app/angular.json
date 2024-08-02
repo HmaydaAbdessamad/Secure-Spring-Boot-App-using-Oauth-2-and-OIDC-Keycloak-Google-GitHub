@@ -3,9 +3,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "customer-app": {
+    "angular-front-app": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/customer-app",
+            "outputPath": "dist/angular-front-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -25,9 +35,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -57,10 +70,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "customer-app:build:production"
+              "buildTarget": "angular-front-app:build:production"
             },
             "development": {
-              "buildTarget": "customer-app:build:development"
+              "buildTarget": "angular-front-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -68,7 +81,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "customer-app:build"
+            "buildTarget": "angular-front-app:build"
           }
         },
         "test": {
@@ -93,6 +106,6 @@
     }
   },
   "cli": {
-    "analytics": "3e7e184a-c730-4e1d-9657-17a75fafc50f"
+    "analytics": "26f77f47-a09d-4550-b927-169eaab61981"
   }
 }
